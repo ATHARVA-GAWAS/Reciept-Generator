@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from openpyxl import Workbook
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistrationForm, ReceiptForm
@@ -87,3 +89,27 @@ def generate_bill(request):
     total_amount = sum(receipt.total for receipt in receipts)
     
     return render(request, 'receipt/generate_bill.html', {'receipts': receipts, 'total_amount': total_amount})
+
+@login_required
+def download_excel(request):
+
+    receipts=Receipt.objects.filter(user=request.user)
+
+    wb=Workbook()
+    ws=wb.active
+    ws.title="Receipts"
+    ws.title="Receipt"
+
+    headers=['Name','Price','Quantity','Total']
+    ws.append(headers)
+
+    for receipt in receipts:
+        row=[receipt.name,receipt.price,receipt.quantity,receipt.total]
+        ws.append(row)
+
+    response=HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="receipts.xlsx"'
+
+    wb.save(response)
+
+    return response

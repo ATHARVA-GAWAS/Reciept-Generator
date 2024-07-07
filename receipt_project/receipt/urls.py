@@ -11,5 +11,6 @@ urlpatterns = [
     path('receipts/delete/<int:receipt_id>/', views.delete_receipt, name='delete_receipt'),
     path('generate_bill/', views.generate_bill, name='generate_bill'),
     path('add_receipt/',views.add_receipt,name='add_receipt'),
+    path('download_excel/', views.download_excel, name='download_excel'),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
