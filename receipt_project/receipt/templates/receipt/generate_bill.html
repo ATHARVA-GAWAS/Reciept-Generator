@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Bill</title>
+</head>
+<body>
+    <h2>Bill</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for receipt in receipts %}
+                <tr>
+                    <td>{{ receipt.name }}</td>
+                    <td>{{ receipt.price }}</td>
+                    <td>{{ receipt.quantity }}</td>
+                    <td>{{ receipt.total }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3>Total Amount: {{ total_amount }}</h3>
+    <a href="{% url 'manage_receipts' %}">Back</a>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Receipts</title>
+</head>
+<body>
+    <h2>Manage Receipts</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for receipt in receipts %}
+                <tr>
+                    <td>{{ receipt.name }}</td>
+                    <td>{{ receipt.price }}</td>
+                    <td>{{ receipt.quantity }}</td>
+                    <td>{{ receipt.total }}</td>
+                    <td>
+                        <a href="{% url 'delete_receipt' receipt.id %}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'generate_bill' %}">Generate Bill</a>
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html>

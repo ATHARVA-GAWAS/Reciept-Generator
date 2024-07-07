@@ -1,0 +1,89 @@
+<!-- templates/receipt/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt Management System</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Receipt Management System</h1>
+    
+    <!-- Form to add a new receipt -->
+    <form method="post" action="{% url 'add_receipt' %}">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" required><br><br>
+        <label for="quantity">Quantity:</label>
+        <input type="text" id="quantity" name="quantity" required><br><br>
+        <button type="submit">Add Receipt</button>
+    </form>
+    
+    
+    <!-- Table to display existing receipts -->
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for receipt in receipts %}
+            <tr>
+                <td>{{ receipt.name }}</td>
+                <td>{{ receipt.price }}</td>
+                <td>{{ receipt.quantity }}</td>
+                <td>{{ receipt.total }}</td>
+                <td>
+                    <a href="{% url 'delete_receipt' receipt.id %}">Delete</a>
+                    <!-- Add update/edit link if needed -->
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Button to generate bill -->
+    <form method="post" action="{% url 'generate_bill' %}">
+        {% csrf_token %}
+        <button type="submit">Generate Bill</button>
+    </form>
+    
+    <!-- Logout button -->
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+
+</body>
+</html>
